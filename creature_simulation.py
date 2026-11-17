@@ -44,15 +44,35 @@ class SwimmingCreature(Creature):
         print(f"{target.name} has {target.hp} HP remaining.")
 
 
+class FireCreature(Creature):
+    def __init__(self, name, hp, attack_power, fire_level=0):
+        super().__init__(name, hp, attack_power)
+        self.fire_level = fire_level
+
+    def emit_fire(self, new_fire_level):
+        self.fire_level = max(0, min(100, new_fire_level))
+        print(f"{self.name} increases fire level to {self.fire_level}.")
+
+    def attack(self, target):
+        damage = self.attack_power + self.fire_level
+        print(f"{self.name} attacks {target.name} with fire!")
+        target.hp -= damage
+        print(f"{target.name} has {target.hp} HP remaining.")
+
+
 if __name__ == "__main__":
     dragon = FlyingCreature("Dragon", 100, 20)
     shark = SwimmingCreature("Shark", 100, 25)
-    goblin = Creature("Goblin", 50, 10)
+    phoenix = FireCreature("Phoenix", 100, 15)
+    goblin = Creature("Goblin", 100, 10)
 
     dragon.fly_to(100)
     dragon.attack(goblin)
 
     shark.dive_to(50)
     shark.attack(goblin)
+
+    phoenix.emit_fire(50)
+    phoenix.attack(goblin)
 
     print(goblin.is_alive())
